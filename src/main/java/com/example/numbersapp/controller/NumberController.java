@@ -6,6 +6,9 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/numbers")
@@ -48,6 +51,16 @@ public class NumberController {
 
        log.info("Calculated average: {}", avg);
        return ResponseEntity.ok(new AverageResponse(avg));
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<HistoryResponse>> history() {
+        return ResponseEntity.ok(numberService.latestHistory());
+    }
+
+    @GetMapping("/history/{id}")
+    public ResponseEntity<HistoryResponse> getHistoryById(@PathVariable Long id) {
+        return ResponseEntity.ok(numberService.getHistoryById(id));
     }
 
 }
